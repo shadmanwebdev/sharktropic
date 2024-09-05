@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chartist.js Example</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chartist@0.11.4/dist/chartist.min.css">
+    <style>
+        .chart {
+            margin-bottom: 20px !important;
+        }
+        .chart .h6 {
+            font-size: 13px;
+        }
+        /* Bar Chart */
+        .ct-series-a .ct-bar {
+            stroke: #0f172a;
+        }
+        .ct-series-b .ct-bar {
+            stroke: #e8e8e8;
+            /* stroke: #eeeef1; */
+        }
+
+        /* Pie Chart */
+        #ct-chart-pie .ct-series-a .ct-slice-donut-solid {
+            fill: #0f172a;
+        }
+        #ct-chart-pie .ct-series-b .ct-slice-donut-solid {
+            fill: #eeeef1;
+        }
+        .ct-series-a .ct-slice-donut {
+            stroke: #0f172a;
+        }
+        .ct-series-b .ct-slice-donut {
+            stroke: #eeeef1;
+        }
+        /* Area Chart */
+        #ct-chart-2 .ct-series-a .ct-line {
+            stroke: #eeeef1;
+        }
+        #ct-chart-2 .ct-series-a .ct-point {
+            stroke: #eeeef1;
+        }
+        #ct-chart-2 .ct-series-a .ct-area {
+            fill: transparent;
+        }
+        /* Area Chart */
+        #ct-chart-3 .ct-series-a .ct-line {
+            stroke: yellow;
+        }
+        #ct-chart-3 .ct-series-a .ct-point {
+            stroke: #eeeef1;
+            display: none;
+        }
+        #ct-chart-3 .ct-series-a .ct-point:last-child {
+            outline: 5px solid yellow;
+            stroke: #202E45;
+            display: block;
+            border-radius: 50%;
+        }
+        #ct-chart-3 .ct-series-a .ct-area {
+            fill: transparent;
+        }
+    </style>
+</head>
+<body>
+    <!-- Chartist -->
+    <link href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css" rel="stylesheet" type="text/css" />
+    <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+
+
+    <link href="plugins/chartist-js/dist/chartist.min.css" rel="stylesheet">
+    <link href="plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.css" rel="stylesheet">
+
+
+
+    <script src="plugins/chartist-js/dist/chartist.min.js"></script>
+    <script src="plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.min.js"></script>
+
+
+
+
+
+    <div class="col-md-6 col-xl-4 m-0 chart" style="max-width: 300px;">
+        <!-- Card -->
+        <div class="card m-0 h-100" >
+            <div class="card-header d-flex">
+                <h5 class="h6 font-weight-semi-bold text-uppercase mb-0">Subscribers</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="media align-items-center px-3 px-md-4 mb-3 mb-md-4">
+                    <div class="media-body">
+                        <h4 class="h3 lh-1 mb-2">150</h4>
+                        <p class="small text-muted mb-0">
+                            +30 <span class="text-success mx-1">+2.31%</span> This Month
+                        </p>
+                    </div>
+                </div>
+
+                <div id='ct-chart-3'></div>
+
+            </div>
+        </div>
+        <!-- End Card -->
+    </div>
+
+
+
+<script defer>
+    // Area Chart
+    new Chartist.Line('#ct-chart-3', {
+            labels: ['2008', '2009', '2010', '2013', '2014', '2015'],
+            series: [
+                [
+                    {meta: 'Subscriptions', value: 1},
+                    {meta: 'Subscriptions', value: 50},
+                    {meta: 'Subscriptions', value: 55},
+                    {meta: 'Subscriptions', value: 75},
+                    {meta: 'Subscriptions', value: 78},
+                    {meta: 'Subscriptions', value: 150},
+                ],
+                // [5, 2, 7, 4, 5, 3, 5, 4]
+            ]
+        }, 
+        {
+            top: 0,
+            low: 1,
+            showPoint: true,
+            fullWidth: true,
+            plugins: [
+                Chartist.plugins.tooltip({
+                    
+                    appendToBody: true,
+                    tooltipFnc: function(meta, value) {
+                        var tooltipContent = '<div class="custom-tooltip">' +
+                            '<div class="tooltip-label">' +
+                            meta +
+                            '</div>' +
+                            '<div class="tooltip-value">Qty: ' +
+                            value +
+                            '</div>' +
+                        '</div>';
+                        return tooltipContent;
+                    },
+                })
+            ],
+            axisY: {
+                labelInterpolationFnc: function (value) {
+                    return (value / 1) + 'k';
+                }
+            },
+            showArea: true,
+            axisX: {
+                showGrid: false,
+                showLabel: false,
+                offset: 0
+            },
+            axisY: {
+                showGrid: false,
+                showLabel: false,
+                offset: 0
+            }
+        }
+    );
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,89 @@
+#deletePopup {
+    max-width: 400px;
+    padding: 40px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 1000;
+    margin-top: -150px;
+    margin-left: -200px;
+    row-gap: 10px;
+    border-radius: 10px;
+}
+#bookingPopupInner {
+    display: flex;
+    flex-flow: column nowrap;
+    row-gap: 5px;
+}
+#popup-heading {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 21.12px;
+    text-align: left;
+    color: #FFFFFF;
+
+
+}
+#btnOuterWrapper, #btnLockedOuterWrapper {
+    display: flex;
+    flex-flow: column nowrap;
+    margin-top: 10px;
+}
+.del-popup-btn {
+    margin-top: 30px;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 21.12px;
+    text-align: left;
+
+    color: #fff;
+    padding: 0;
+    cursor: pointer;
+}
+.del-popup-btn img {
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+#cross {
+    background: #EFF4FA1A;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    
+    position: absolute;
+    right: 25px;
+    top: 25px;
+}
+#cross img {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+@media screen and (max-width: 576px) {
+    #deletePopup {
+        width: 350px;
+        height: auto;
+        margin-left: -175px;
+        margin-top: -250px;
+        padding: 50px 30px;
+        align-items: center;
+    }
+    #popup-heading {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+    #btnOuterWrapper {
+        margin-top: 0;
+    }
+    #bookBtn, #bookCancelBtn {
+        width: 120px;
+    }
+}

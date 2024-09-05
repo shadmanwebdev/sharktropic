@@ -1,0 +1,18 @@
+================================================================
+    Search (Products)
+================================================================
+1. Products page -> User clicks Search
+
+2. JS -> Sends ajax request with `searched text`
+
+3. searched-product.php 
+    -> calls method to show filtered results
+    -> searched_products($search)
+        -> get_searched_products($search)
+
+4. We return the html as response to ajax
+
+5. Results are inserted into `products` table
+
+
+

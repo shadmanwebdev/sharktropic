@@ -1,0 +1,108 @@
+#deletePopup > .details-outer-container {
+    width: 92%;
+    top: 20px;
+    left: 4%;
+    margin-top: 0px;
+    margin-left: 0px;
+    row-gap: 10px;
+    padding: 30px 30px 30px 30px!important;
+}
+
+.details-wrapper {
+    max-width: 900px;
+    margin: 0px auto;
+}
+.details-row {
+    max-width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    column-gap: 20px;
+}
+.details-column {
+    width: 100%;
+    background: transparent;
+    color: #fff;
+}
+.details-wrapper .details-column-header {
+    padding: 0;
+    margin-bottom: 30px;
+}
+.details-wrapper .details-column-title {
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 30px;
+    text-align: left;
+    
+}
+.details-wrapper ul.details-list {
+    width: 100%;
+    list-style: none;
+}
+.details-wrapper ul.details-list-50 {
+    width: 100%;
+    list-style: none;
+}
+
+
+.details-wrapper ul.details-list li, .details-wrapper ul.details-list-50 li {    width: 100%;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    font-size: 16px;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: unset;
+    border-bottom: 1px solid #E6EBF31A;
+}
+
+
+.details-wrapper .details-column.details-column-100 {
+    width: 100%;
+}
+
+
+
+.details-wrapper .profile-photo {
+    width: 125px;
+    height: 125px;
+    overflow: hidden;
+}
+.details-wrapper .profile-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+
+.details-wrapper .delete {
+    display: flex;
+    margin-top: 40px;
+    color: #ff6060;
+    cursor: pointer;
+}
+.details-wrapper .btns {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+@media screen and (min-width: 991px) {
+    .details-wrapper ul.details-list li, 
+    .details-wrapper ul.details-list-50 li {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    #deletePopup > .details-outer-container {
+        width: 700px;
+        top: 50px;
+        left: 50%;
+        margin-top: 0px;
+        margin-left: -350px;
+        row-gap: 10px;
+        padding: 40px 40px 40px 40px !important;
+    }
+}
