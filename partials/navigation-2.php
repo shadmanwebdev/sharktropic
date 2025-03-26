@@ -925,7 +925,7 @@
         </div>
         <div class='logo logo-dark float-left'>
             <a href='./'>
-                <img src='assets/logo.png' alt='' class='img-fluid'>
+                <img src='assets/logo-new.svg' alt='' class='img-fluid'>
             </a>
         </div>";
 ?>
@@ -1008,7 +1008,7 @@
 
         $img = "<div class='logo float-left'>
             <a href='./'>
-                <img src='assets/logo.png' alt='' class='img-fluid'>
+                <img src='assets/logo-new.svg' alt='' class='img-fluid'>
             </a>
         </div>
         <div class='logo logo-dark float-left'>
@@ -1140,7 +1140,7 @@
                 <div class="logo float-left">
                     <a href="./">
                         <!-- Logo -->
-                        <img src="assets/logo.svg?v=1" alt="" class="img-fluid">
+                        <img src="assets/logo-new.svg?v=1" alt="" class="img-fluid">
                     </a>
                 </div>
                 <ul>

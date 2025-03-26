@@ -55,6 +55,7 @@
                 $('#deletePopup').html(response);
                 // Show Pop Up
                 popup('deletePopup');
+                initializeImageEvents();
             // }, 500);
         })
         .catch( err => console.log(err));
@@ -301,7 +302,7 @@
 
                 <div class='stats'>
                     <div class="stats-inner-div">
-                        
+
                         <style>
                             .cards {
                                 max-width: 100%;
@@ -551,7 +552,7 @@
 </div>
 
 
-
+<script src="js/product-image.js" defer></script>
 
 <?php
     include './footer.php';

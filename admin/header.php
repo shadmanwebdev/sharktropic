@@ -25,6 +25,9 @@
     include('../Classes/Product.php');
     include('../Classes/News.php');
     include('../Classes/Order.php');
+    include('../Classes/Newsletter.php');
+    include('../Classes/Coupon.php');
+    include('../Classes/Donations.php');
     $s = new MyApp\Classes\SiteSettings;
 
 

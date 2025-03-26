@@ -1,7 +1,7 @@
 <style>
     .sidebar {
-        min-width: 260px;
-        max-width: 260px;
+        min-width: 300px;
+        max-width: 300px;
         direction: ltr;
         /* position: fixed; */
         display: flex;
@@ -55,7 +55,7 @@
         color: #ffffff;
         background: #2F405F;
 
-        padding: 15px 74px 15px 20px;
+        padding: 15px 5px 15px 5px;
         border-radius: 12px;
 
     }
@@ -156,11 +156,11 @@
         height: 26px;
     }
     .sidebar.collapsed {
-        margin-left: -260px;
+        margin-left: -300px;
     }
     @media (min-width: 1px) and (max-width: 991.98px) {
         .sidebar {
-            margin-left: -260px;
+            margin-left: -300px;
         }
         .sidebar.collapsed {
             margin-left: 0;
@@ -277,7 +277,23 @@
             max-height: 0;
             opacity: 0;
         }
-    }
+    }        
+    @keyframes pull {
+            0% {
+                margin-left: -300px;
+            }
+            100% {
+                margin-left: 0;
+            }
+        }
+        @keyframes push {
+            0% {
+                margin-left: 0;
+            }
+            100% {
+                margin-left: -300px;
+            }
+        }
 </style>
 
 
@@ -288,7 +304,10 @@
         '' => 'Dashboard',
         'orders' => 'Orders',
         'products' => 'Products',
-        'news' => 'News'
+        'news' => 'News',
+        'subscribers' => 'Subscribers',
+        'create coupon code' => 'Create coupon code',
+        'donation' => 'Donation'
     );
 
     $pagename = get_pagename();
@@ -298,45 +317,120 @@
         $ordersClass = '';
         $productsClass = '';
         $newsClass = '';
-
+        $subscribersClass = '';
+        $createCouponCodeClass = '';
+        $donationClass = '';
+        
         $indexClassImg = 'dashboard-dark.svg';
         $ordersClassImg = 'orders-blue.svg';
         $productsClassImg = 'products-blue.svg';
         $newsClassImg = 'news-blue.svg';
+        $subscribersClassImg = 'subscribers-blue.svg';
+        $createCouponCodeClassImg = 'coupon-code-blue.svg';
+        $donationClassImg = 'donation-blue.svg';
 
     } else if ($pagename == 'orders') {
         $indexClass = '';
         $ordersClass = 'active';
         $productsClass = '';
         $newsClass = '';
+        $subscribersClass = '';
+        $createCouponCodeClass = '';
+        $donationClass = '';
         
         $indexClassImg = 'dashboard-blue.svg';
         $ordersClassImg = 'orders-dark.svg';
         $productsClassImg = 'products-blue.svg';
         $newsClassImg = 'news-blue.svg';
+        $subscribersClassImg = 'subscribers-blue.svg';
+        $createCouponCodeClassImg = 'coupon-code-blue.svg';
+        $donationClassImg = 'donation-blue.svg';
 
     } else if ($pagename == 'products') {
         $indexClass = '';
         $ordersClass = '';
         $productsClass = 'active';
         $newsClass = '';
+        $subscribersClass = '';
+        $createCouponCodeClass = '';
+        $donationClass = '';
 
         
         $indexClassImg = 'dashboard-blue.svg';
         $ordersClassImg = 'orders-blue.svg';
         $productsClassImg = 'products-dark.svg';
         $newsClassImg = 'news-blue.svg';
+        $subscribersClassImg = 'subscribers-blue.svg';
+        $createCouponCodeClassImg = 'coupon-code-blue.svg';
+        $donationClassImg = 'donation-blue.svg';
 
     } else if ($pagename == 'news') {
         $indexClass = '';
         $ordersClass = '';
         $productsClass = '';
         $newsClass = 'active';
+        $subscribersClass = '';
+        $createCouponCodeClass = '';
+        $donationClass = '';
         
         $indexClassImg = 'dashboard-blue.svg';
         $ordersClassImg = 'orders-blue.svg';
         $productsClassImg = 'products-blue.svg';
         $newsClassImg = 'news-dark.svg';
+        $subscribersClassImg = 'subscribers-blue.svg';
+        $createCouponCodeClassImg = 'coupon-code-blue.svg';
+        $donationClassImg = 'donation-blue.svg';
+
+    }  else if ($pagename == 'subscribers') {
+        $indexClass = '';
+        $ordersClass = '';
+        $productsClass = '';
+        $newsClass = '';
+        $subscribersClass = 'active';
+        $createCouponCodeClass = '';
+        $donationClass = '';
+        
+        $indexClassImg = 'dashboard-blue.svg';
+        $ordersClassImg = 'orders-blue.svg';
+        $productsClassImg = 'products-blue.svg';
+        $newsClassImg = 'news-blue.svg';
+        $subscribersClassImg = 'subscribers-dark.svg';
+        $createCouponCodeClassImg = 'coupon-code-blue.svg';
+        $donationClassImg = 'donation-blue.svg';
+
+    }   else if ($pagename == 'create-coupon-code') {
+        $indexClass = '';
+        $ordersClass = '';
+        $productsClass = '';
+        $newsClass = '';
+        $subscribersClass = '';
+        $createCouponCodeClass = 'active';
+        $donationClass = '';
+        
+        $indexClassImg = 'dashboard-blue.svg';
+        $ordersClassImg = 'orders-blue.svg';
+        $productsClassImg = 'products-blue.svg';
+        $newsClassImg = 'news-blue.svg';
+        $subscribersClassImg = 'subscribers-blue.svg';
+        $createCouponCodeClassImg = 'coupon-code-dark.svg';
+        $donationClassImg = 'donation-blue.svg';
+
+    }   else if ($pagename == 'donation') {
+        $indexClass = '';
+        $ordersClass = '';
+        $productsClass = '';
+        $newsClass = '';
+        $subscribersClass = '';
+        $createCouponCodeClass = '';
+        $donationClass = 'active';
+        
+        $indexClassImg = 'dashboard-blue.svg';
+        $ordersClassImg = 'orders-blue.svg';
+        $productsClassImg = 'products-blue.svg';
+        $newsClassImg = 'news-blue.svg';
+        $subscribersClassImg = 'subscribers-blue.svg';
+        $createCouponCodeClassImg = 'coupon-code-blue.svg';
+        $donationClassImg = 'donation-dark.svg';
 
     } 
 ?>
@@ -380,6 +474,24 @@
                 </a>
             </li>
 
+            <li class="sidebar-item <?= $subscribersClass; ?>">
+                <a class="sidebar-link" href="subscribers">
+                    <img src="./assets/<?= $subscribersClassImg; ?>" alt="">
+                    <span class="align-middle">Subscribers</span>
+                </a>
+            </li>
+            <li class="sidebar-item <?= $createCouponCodeClass; ?>">
+                <a class="sidebar-link" href='create-coupon-code'>
+                    <img src="./assets/<?= $createCouponCodeClassImg; ?>" alt="">
+                    <span class="align-middle">Create coupon code</span>
+                </a>
+            </li>
+            <li class="sidebar-item <?= $donationClass; ?>">
+                <a class="sidebar-link" href="donation">
+                    <img src="./assets/<?= $donationClassImg; ?>" alt="">
+                    <span class="align-middle">Donations</span>
+                </a>
+            </li>
             <!-- <li class="sidebar-item">
                 <a class="sidebar-link" href="index">
                      <span class="align-middle">Dashboard</span>

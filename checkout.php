@@ -3,15 +3,6 @@
     // require 'vendor/autoload.php';
 ?>
 
-<style>
-    .page-wrapper {
-        padding: 20px 20px 50px 20px;
-        min-height: 100vh;
-        width: 100%;
-        background: rgba(29, 37, 52, .8);
-    }
-</style>
-
 
 <!-- Form -->
 <style>

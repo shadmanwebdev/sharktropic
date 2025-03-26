@@ -6,13 +6,6 @@
 
 
 <style>
-    .page-wrapper {
-        padding: 20px 20px 50px 20px;
-        min-height: 100vh;
-        width: 100%;
-        background: rgba(29, 37, 52, .8);
-    }
-
     .logo-outer {
         max-width: 1440px;
         margin: 0px auto 50px auto;
@@ -24,14 +17,16 @@
     }
     .logo-outer .logo {
         max-width: 220px;
-        margin-left: -20px;
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
     }
     .dt-now {
         font-size: 13px;
         font-weight: 500;
         line-height: 1.35;
         margin-top: 15px;
-        margin-left: 35px;
+        margin-left: 8px;
         color: rgba(255, 255, 255, 1);
     }
 
@@ -57,13 +52,14 @@
         .logo-outer .logo {
             max-width: 300px;
             margin-left: 0px;
+            align-items: start;
         }
         .dt-now {
             font-size: 18px;
             font-weight: 500;
             line-height: 1.35;
             margin-top: 10px;
-            margin-left: 25px;
+            margin-left: 8px;
             color: rgba(255, 255, 255, 1);
         }
 
@@ -237,7 +233,7 @@
         <div class="logo float-left">
             <a href="./">
                 <!-- Logo -->
-                <img src="assets/logo.png?v=1" alt="" class="img-fluid">
+                <img src="assets/logo-new.svg?v=1" alt="" class="img-fluid">
             </a>
             <div class='dt-now'>03/17/2024 1:33am DMV</div>
         </div>

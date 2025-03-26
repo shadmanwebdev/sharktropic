@@ -24,10 +24,6 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        padding: 20px 20px 50px 20px;
-        min-height: 100vh;
-        width: 100%;
-        background: rgba(29, 37, 52, .8);
     }
     .logo-outer {
         max-width: 1440px;
@@ -40,13 +36,15 @@
     }
     .logo-outer .logo {
         max-width: 250px;
+        display: flex;
+        justify-content: center;
     }
     .dt-now {
         font-size: 16px;
         font-weight: 500;
         line-height: 1.35;
         margin-top: 15px;
-        margin-left: 35px;
+        margin-left: 8px;
         color: rgba(255, 255, 255, 1);
     }
     @media screen and (min-width: 1280px) {
@@ -64,12 +62,276 @@
 </style>
 
 
+<!-- Form -->
+<style>
+    .popup {
+        position: fixed;
+        top: 50%;
+        left: 2.5%;
+        background-color: #fff;
+        padding: 0px;
+        width: 95%;
+        margin-top: -150px;
+        margin-left: 0px;
+        z-index: 1000;
+        border-radius: 6px;
+    }
+    .hide_popup {
+        display: none;
+    }
+    .show_popup {
+        display: block;
+    }
+    .popup form {
+        width: 100%;
+        padding: 50px 30px;
+        margin: 0px auto;
+        background-color: #394152;
+        /* border-radius: 6px; */
+    }
+    .popup form .form-header{
+        text-align: center;
+        margin-bottom: 40px;
+    }
+    .popup form h2 {
+        font-size: 25px;
+        line-height: 1;
+        font-weight: 600;
+        margin: 0 0 15px;
+        color: #FFFFFF;
+    }
+    .popup form p.subtitle {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 500;
+        color: #FFFFFF;
+    }
+
+    .popup .input-wrapper {
+        margin-bottom: 20px;
+    }
+    .popup .input-field {
+        box-sizing: border-box;
+        width: 100%;
+        padding: 12px 16px;
+        transition: border-color 0.3s, color 0.3s;
+        max-height: 45px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        font-size: 16px;
+        line-height: 20px;
+        border-radius: 6px;
+        color: #ffffff;
+        background-color: #394152;
+        border: 1px solid #FFFFFF1A;
+    }
+
+    .popup .input-field:focus {
+        background-color: #394152;
+        border: 1px solid gray;
+        outline: none;
+    }
+    .popup input:-webkit-autofill,
+    .popup input:-webkit-autofill:hover,
+    .popup input:-webkit-autofill:focus,
+    .popup input:-webkit-autofill:active {
+        -webkit-text-fill-color: #fff !important;
+        -webkit-box-shadow: 0 0 0px 1000px #394152 inset !important;
+        border: 1px solid gray !important;
+        outline: none !important;
+    }
+    .popup .g-btn {
+        border: none;
+        padding: 16px 26px 16px 26px;
+        font-size: 14px;
+        line-height: 20px;
+        border-radius: 6px;
+        color: #111111;
+        background: #FEFA6A;
+        min-width: 78px;
+        transition: opacity .15s ease,background-color .15s ease,box-shadow .15s ease;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        width: 100%;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        min-height: 45px;
+        cursor: pointer;
+        font-weight: 500;
+        opacity: 1;
+        transition: .3s;
+    }
+
+    .popup .g-btn:hover {
+        color: #111111;
+        font-weight: 500;
+        opacity: .8;
+    }
 
 
+    .popup ::-webkit-input-placeholder {
+        font-size: 14px;
+        color: rgba(166, 174, 195, 1);
+    }
+    .popup ::-moz-input-placeholder {
+        font-size: 14px;
+        color: rgba(166, 174, 195, 1);
+    }
+    .popup ::-ms-input-placeholder {
+        font-size: 14px;
+        color: rgba(166, 174, 195, 1);
+    }
+    @media screen and (min-width: 576px) { 
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            background-color: #fff;
+            padding: 0px;
+            width: 500px;
+            margin-top: -150px;
+            margin-left: -250px;
+            z-index: 1000;
+            border-radius: 6px;
+        }
+        .popup form {
+            padding: 50px;
+        }  
+    }
+</style>
+
+<style>
+    .checkmark {
+        width: 90px;
+        height: 90px;
+        margin: 0 auto 30px auto;
+    }
+    .checkmark img {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
+<!-- Range Slider -->
+<style>
+    .notification-slider {
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: center;
+        align-items: center;
+    }
+    .range-wrapper {
+        width: 40px;
+        margin-bottom: 10px;
+    }
+    
+    .range-container {
+        position: relative;
+        height: 31px;
+        padding: 3px;
+        cursor: pointer;
+    }
+    
+    .track {
+        position: absolute;
+        height: 24px;
+        width: 100%;
+        background: #1c1c1c;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid #f0ed35;
+    }
+    
+    .thumb {
+        position: absolute;
+        height: 24px;
+        width: 24px;
+        background: #f0ed35;
+        border-radius: 50%;
+        top: 3px;
+        z-index: 2;
+        transition: left 0.2s ease;
+    }
+    
+    .thumb .dot {
+        position: absolute;
+        height: 22px;
+        width: 22px;
+        background: #000;
+        border-radius: 50%;
+        top: 1px;
+        left: 1px;
+    }
+    
+    .hidden-input {
+        display: none;
+    }
+    
+    /* For the filled part of the track */
+    .fill {
+        position: absolute;
+        height: 100%;
+        width: 0;
+        background: #f0ed35;
+        border-radius: 10px 0 0 10px;
+        transition: width 0.2s ease;
+    }
+
+    .notify-text {
+        font-size: 16px;
+        color: #fff;
+        margin-left: 15px;
+    }
+
+    @media screen and (min-width: 768px) {
+        .notification-slider {
+            flex-flow: row nowrap;
+            justify-content: center;
+            align-items: center;
+        }
+        .range-wrapper {
+            margin-bottom: 0px;
+        }
+    }
+</style>
+
+<div class='popup hide_popup' id='verifyPopup' style='padding: 0;'>
+    
+    <form action="" id='login-form'>
+        <div class="form-header">
+            <h2>Verify Phone Number</h2>
+            <p class="subtitle">We sent a verification code via sms. </p>
+        </div>
+        <div class="input-wrapper" id='code-wrapper-1'>
+            <input name="code" id="code" type="text" class="input-field" placeholder='Enter code'>
+            <div id='code-error-1' class="error-text"></div>
+        </div>
+        
+        <span id='login-submit' class="g-btn" onclick='verify(event)'>Verify</span>
+        
+    </form>
+</div>
 
 
-
-
+<div class='popup hide_popup' id='verifySuccessPopup' style='padding: 0;'>
+    
+    <form action="" id='login-form'>
+        
+        <div class="checkmark">
+            <img src="assets/checkmark.svg" alt="" class="img-fluid">
+        </div>
+        
+        <div class="form-header">
+            <h2>Verification Completed</h2>
+            <p class="subtitle">SMS verification completed successfully. </p>
+        </div>
+        
+        <a href='./' id='login-submit' class="g-btn">Continue to home</a>
+        
+    </form>
+</div>
 
 
 
@@ -77,17 +339,10 @@
 
 <div class='page-wrapper'>
 
-    <div class='logo-outer'>
-        <div class="logo-dt">
-            <div class="logo float-left">
-                <a href="./">
-                    <!-- Logo -->
-                    <img src="assets/logo.png?v=1" alt="" class="img-fluid">
-                </a>
-            </div>
-            <div class='dt-now'>03/17/2024 1:33am DMV</div>
-        </div>
-    </div>
+    
+    <?php
+        include './logo-centered.php';
+    ?>
 
     
 
@@ -232,150 +487,6 @@
         </style>
 
 
-        <style>
-            /* range input */
-            .range-status {
-                margin-bottom: 10px;
-            }
-            .range-container {
-                margin-top: 3px;
-            }
-            input[type=range] {
-                background: transparent;
-                -webkit-appearance: none;
-                width: 35px;
-                margin: 0;
-            }
-
-            /* Track styles */
-            input[type=range]::-webkit-slider-runnable-track {
-                width: 100%;
-                height: 22px;
-                cursor: pointer;
-                box-shadow: none;
-                border-radius: 20px;
-                border: 0;
-            }
-            input[type=range]::-moz-range-track {
-                width: 100%;
-                height: 22px;
-                cursor: pointer;
-                box-shadow: none;
-                border-radius: 20px;
-                border: 0;
-            }
-            input[type=range]::-ms-track {
-                width: 100%;
-                height: 22px;
-                cursor: pointer;
-                box-shadow: none;
-                border-radius: 20px;
-                border: 0;
-                background: transparent;
-                color: transparent;
-            }
-
-            input[type=range].light-track::-webkit-slider-runnable-track {
-                background: #2F405F;
-                border: 2px solid #FEFA6A; /* Yellow border */
-            }
-            input[type=range].light-track::-moz-range-track {
-                background: #2F405F;
-                border: 2px solid #FEFA6A; /* Yellow border */
-            }
-            input[type=range].light-track::-ms-fill-lower {
-                background: #2F405F;
-            }
-            input[type=range].light-track::-ms-fill-upper {
-                background: #2F405F;
-            }
-
-            input[type=range].dark-track::-webkit-slider-runnable-track {
-                background: #FEFA6A;
-            }
-            input[type=range].dark-track::-moz-range-track {
-                background: #FEFA6A;
-            }
-            input[type=range].dark-track::-ms-fill-lower {
-                background: #FEFA6A;
-            }
-            input[type=range].dark-track::-ms-fill-upper {
-                background: #FEFA6A;
-            }
-
-            /* Thumb styles */
-            input[type=range]::-webkit-slider-thumb {
-                box-sizing: border-box;
-                -webkit-appearance: none;
-                width: 20px;
-                height: 20px;
-                border-radius: 50%;
-                cursor: pointer;
-            }
-            input[type=range]::-moz-range-thumb {
-                box-sizing: border-box;
-                width: 20px;
-                height: 20px;
-                border-radius: 50%;
-                cursor: pointer;
-            }
-            input[type=range]::-ms-thumb {
-                box-sizing: border-box;
-                width: 20px;
-                height: 20px;
-                border-radius: 50%;
-                cursor: pointer;
-            }
-
-            input[type=range].light-track::-webkit-slider-thumb {
-                width: 18px;
-                height: 18px;
-                box-sizing: border-box;
-                background-color: #FEFA6A; /* Yellow thumb */
-                border: 3px solid #2F405F; /* Dark blue border */
-            }
-            input[type=range].light-track::-moz-range-thumb {
-                width: 18px;
-                height: 18px;
-                box-sizing: border-box;
-                background-color: #FEFA6A; /* Yellow thumb */
-                border: 3px solid #2F405F; /* Dark blue border */
-            }
-            input[type=range].light-track::-ms-thumb {
-                width: 18px;
-                height: 18px;
-                box-sizing: border-box;
-                background-color: #FEFA6A; /* Yellow thumb */
-                border: 3px solid #2F405F; /* Dark blue border */
-            }
-
-            input[type=range].dark-track::-webkit-slider-thumb {
-                width: 21.5px;
-                height: 21.5px;
-                background-color: #2F405F; /* Dark blue thumb */
-                border: 2px solid #FEFA6A; /* Yellow border */
-            }
-            input[type=range].dark-track::-moz-range-thumb {
-                width: 21.5px;
-                height: 21.5px;
-                background-color: #2F405F; /* Dark blue thumb */
-                border: 2px solid #FEFA6A; /* Yellow border */
-            }
-            input[type=range].dark-track::-ms-thumb {
-                width: 21.5px;
-                height: 21.5px;
-                background-color: #2F405F; /* Dark blue thumb */
-                border: 2px solid #FEFA6A; /* Yellow border */
-            }
-
-            /* Focus styles */
-            input[type=range]:focus {
-                outline: none;
-            }
-
-        </style>
-
-
         <!-- Newsletter -->
         <div class="newsletter">
             <div class="newsletter_content">
@@ -383,7 +494,8 @@
                     <div class="row">
                         <div class="col">
                             <div class="section_title_container text-center">
-                                <div class="section_title">Add my email to your mailing list</div>
+                                <div class="section_title">Add your number to our SMS list</div>
+                                <!-- <div class="section_title">Add my email to your mailing list</div> -->
                                 <div class="section_subtitle">I understand that i can opt out at any time</div>
                             </div>
                         </div>
@@ -392,21 +504,35 @@
                         <div class='col-lg-10 offset-lg-1'>
                             <div class='newsletter_form_container' id='email-wrapper'>
                                 <form action='#'>
-                                    <input id='email-field' type='email' class='newsletter_input' required='required' placeholder='Enter your email'>
+                                    <input id='email-field' type='email' class='newsletter_input' required='required' placeholder='Enter your number'>
                                     <button type='submit' class='newsletter_button' onclick='add_to_mailing_list(event)'>Subscribe</button>
                                 </form>
                                 <div class='error' id='email-error'></div>
                                 <div class='message-response' id='message-response-1'></div>
                             </div>
                             <div class="newsletter_text">
-                                <div class='range-wrapper' style='margin-bottom: 10px; margin-left: 10px; margin-right: 10px;'>
-                                    <div class='range-container'>
-                                        <input style='background: transparent;' onchange='changeTheme();' type='range' min='1' max='2' value='2' class='theme dark-track' id='theme' name='theme'>
+                            
+                            
+                                <!-- Range Slider -->
+                                <div class='notification-slider'>
+                                    <div class="range-wrapper">
+                                        <div class="range-container" id="slider-container">
+                                            <div class="track">
+                                                <div class="fill" id="fill"></div>
+                                            </div>
+                                            <div class="thumb" id="thumb">
+                                                <div class="dot"></div>
+                                            </div>
+                                            <input type="hidden" id="theme" name="theme" value="2" class="hidden-input">
+                                        </div>
+                                    </div>
+
+                                    <div class='notify-text'>
+                                        <span>Notify me of upcoming drops</span>
                                     </div>
                                 </div>
-                                <span style='margin-bottom: 10px;'>
-                                    Notify me when the web shop is updated with new items
-                                </div>
+                                
+                            
                             </div>
                             
                         </div>
@@ -416,9 +542,6 @@
                 </div>
             </div>
         </div>
-        
-
-        
 
 
     <?php
@@ -426,23 +549,60 @@
     ?>
 </div>
 
+
+
+<!-- Range Slider -->
 <script defer>
-    function changeTheme() {   
-        var theme = document.getElementById('theme');
-        var themeValue = theme.value;
-
-        if(themeValue == '2') {
-            theme.classList.remove('light-track');
-            theme.classList.add('dark-track');
-        } else if(themeValue == '1') {
-            theme.classList.remove('dark-track');
-            theme.classList.add('light-track');
-        }
-
+    document.addEventListener('DOMContentLoaded', function() {
+        const container = document.getElementById('slider-container');
+        const thumb = document.getElementById('thumb');
+        const fill = document.getElementById('fill');
+        const hiddenInput = document.getElementById('theme');
         
-    }
+        // Initialize to position 2 (right side)
+        let currentValue = 2;
+        updateSliderPosition();
+        
+        // Toggle function to switch between values 1 and 2
+        function toggleValue() {
+            // Toggle between 1 and 2
+            currentValue = currentValue === 1 ? 2 : 1;
+            hiddenInput.value = currentValue;
+            
+            // Update the visual representation
+            updateSliderPosition();
+            
+            // Call the changeTheme function if it exists
+            if (typeof changeTheme === 'function') {
+                changeTheme();
+            }
+        }
+        
+        // Function to update slider position based on current value
+        function updateSliderPosition() {
+            // If value is 1, position at 0%, if 2, position at 100%
+            const percentage = currentValue === 1 ? 0 : 100;
+            
+            // Update the thumb position
+            const maxOffset = container.clientWidth - thumb.clientWidth; 
+            thumb.style.left = `${(percentage / 100) * maxOffset + 2}px`;
+            
+            // Update the fill width
+            fill.style.width = `${percentage}%`;
+        }
+        
+        // Click event for the container
+        container.addEventListener('click', toggleValue);
+        
+        // Click event for the thumb (to ensure it works when clicking directly on thumb)
+        thumb.addEventListener('click', function(e) {
+            toggleValue();
+            e.stopPropagation();
+        });
+    });
 </script>
-    
+
+
 
 <script defer>
     function add_to_mailing_list(event) {
@@ -454,7 +614,8 @@
         // console.log(email, password);
 
         if(
-            email && email.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
+            email
+            // && email.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
         ) {
             load_start();
 
@@ -482,20 +643,19 @@
                     console.log(response);
 
                     if($.trim(response) == '1') {
-                        $('#message-response-1').html("<div class='error'>Invalid email or password</div>");
-                    } 
-                    else {
-                        $('#message-response-1').html("<div class='error'>Invalid email or password</div>");
+                        popup('verifyPopup');
+                    } else {
+                        $('#message-response-1').html("<div class='error'>Invalid phone number</div>");
                     }
                 }, 500);
             })
             .catch( err => console.log(err));
         } else {
             // Email error
-            if(email && email.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
-                $('#email-error').html('');
-                $('#email-wrapper').removeClass('invalid');
-            } else {
+            // if(email && email.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
+            //     $('#email-error').html('');
+            //     $('#email-wrapper').removeClass('invalid');
+            // } else {
                 if(email) {
                     $('#email-error').html('<div>Please enter a valid email address</div>');
                     $('#email-wrapper').addClass('invalid');
@@ -503,13 +663,64 @@
                     $('#email-error').html('<div>The Email field is required</div>');
                     $('#email-wrapper').addClass('invalid');
                 }
-            }
+            // }
         }
     }
 </script>
 
 
+<script>
 
+    function code_onchage() {
+        var codeInput = document.getElementById('code');
+    
+        if(typeof(codeInput) != 'undefined' && codeInput != null) {
+            codeInput.addEventListener('change', function() {
+                if(codeInput.value) {
+                    console.log(codeInput.value);
+                    $('#code-error-1').html('');
+                    $('#code-wrapper-1').removeClass('invalid');
+                } else {
+                    $('#code-error-1').html('<div>The code field is required</div>');
+                    $('#code-wrapper-1').addClass('invalid');
+                }
+            });
+        }
+    }
+    code_onchage();
+    
+    function verify(event) {
+        event.preventDefault();
+        var formData = new FormData();
+
+        const code = $('#code').val();
+
+        formData.append('code', code);
+        formData.append('verify_phone', 'true');
+
+        if (code) {
+            fetch('./controllers/mailing-list-handler', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                return response.text();
+            })
+            .then(response => {
+                console.log(response);
+
+                if(response == 'approved') {
+                    popup('verifySuccessPopup');
+                }
+                
+            })
+            .catch(err => console.log(err));
+        } else {
+            $('#code').addClass('invalid');
+            $('#code-error-1').html('<div>Code cannot be blank</div>');
+        }
+    }
+</script>
 
 
 <?php

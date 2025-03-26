@@ -253,6 +253,18 @@
                                 border-radius: 12px;
                                 margin-bottom: 30px;
                             }
+                            .donations-subtitle {
+                                text-align: center;
+                                font-family: Poppins;
+                                font-size: 14px;
+                                font-weight: 500;
+                                line-height: 21px;
+                                text-align: center;
+                                margin: 20px 0;
+                            }
+                            .donations-subtitle .amount {
+                                color: #FEFA6A;
+                            }
                             .current-year-donation {
                                 font-family: Poppins;
                                 font-size: 14px;
@@ -308,14 +320,14 @@
                                     margin-top: 0px;
                                 }
                                 .my-donation .image-wrapper {
-                                    width: 70%;
+                                    width: 45%;
                                 }
                             }
                         </style>
                         
                         <?php
-                            $order = new MyApp\Classes\Order;
-                            $order->my_donation();
+                            $donations = new MyApp\Classes\Donations;
+                            $donations->donations_widget();
                         ?>
 
 
@@ -393,7 +405,7 @@
 
 
 
-
+<script src="js/news-image.js" defer></script>
 
 
 

@@ -2,11 +2,12 @@
 /*
 =================================================================
     cURL
-    CRUD (create, read, update, delete) 
+    CRUD (create, read, update, delete) product_popup()
     GET PRODUCT
     CREATE PRODUCT
     UPDATE PRODUCT
-    
+    my_collection_popup($product_id)
+			
     DISPLAY
 
     COLORS
@@ -581,7 +582,7 @@ class Product extends Db {
 
 
 
-            $pdtsStr .= "<a class='product' href='./product?pid=$id'>
+            $pdtsStr .= "<a class='product' href='./product-drop?pid=$id'>
                 <div class='c-item'>
                     <div class='thumbnail'>
                         <img src='./admin/uploads/$img_small' alt='Thumbnail'>
@@ -601,6 +602,180 @@ class Product extends Db {
         }
 
         echo $pdtsStr;
+    }
+    public function collection_drop() {
+        $products = $this->get_products();
+ 
+        $num_of_rows = count($products);
+        $results_per_page = 16;
+
+        $num_of_sections = ceil($num_of_rows / $results_per_page);
+
+        $pdtsStr = "";
+
+        $cur_pdt_num = 0;
+        foreach ($products as $product) {
+            if($results_per_page > $cur_pdt_num) {
+                $id = $product['id'];
+                $images = $product['images'];
+        
+                $sale_price = "$".$product['sale_price'];
+                $regular_price = "$".$product['regular_price'];
+                $description = paragraphs($product['description']);
+        
+
+
+                $img_small = $images[0]['image_filename_sm'];
+                $img_medium = $images[0]['image_filename_md'];
+
+                $pdtsStr .= "<a class='product' href='./product-drop?pid=$id'>
+                    <div class='c-item'>
+                        <div class='thumbnail'>
+                            <img src='./admin/uploads/$img_small' alt='Thumbnail'>
+                            <p>{$product['title']}</p>
+                        </div>
+                        <div class='title'>
+                            <p>{$product['title']}</p>
+                        </div>
+                    </div>
+                </a>";   
+            }
+            $cur_pdt_num += 1;
+        }
+
+        return $pdtsStr;
+    }
+    
+    public function product_popup() {
+        $products = $this->get_products();
+        $num_of_rows = count($products);
+        $results_per_page = 16;
+        $num_of_pages = ceil($num_of_rows/$results_per_page);
+
+
+
+        if(!isset($_GET['page'])) {
+            $page = 1;
+        } else {
+            if($_GET['page'] == 0) {
+                $page = 1;
+            } else {
+                if($_GET['direction'] == 'next') {
+                    $page = ($_GET['page'] < $num_of_pages) ? intval($_GET['page']) + 1 : $num_of_pages;
+                } else if($_GET['direction'] == 'prev') {
+                    $page = ($_GET['page'] > 1) ? intval($_GET['page']) - 1 : 1;
+                }
+                
+            }
+        }
+
+        $starting_limit_number = ($page-1)*$results_per_page;
+
+        $pdtsStr = "";
+
+
+
+        $product_ids = array_keys($products); 
+
+        $single_product_id = $product_ids[$starting_limit_number]; 
+        $single_product = $this->product_images($single_product_id);
+
+        $pdtsStr .= $single_product;
+
+        $pdtsStr .= "<div class='collection-inner'>
+            <div class='collection'>";
+
+        //var_dump($product_ids);
+        for($x=$starting_limit_number; $x<$starting_limit_number+$results_per_page; $x++) {
+            if($x < $num_of_rows) {
+                // echo $x;
+                $product_id = $product_ids[$x]; 
+                $product = $products[$product_id];
+
+                $id = $product['id'];
+                $images = $product['images'];
+        
+                $sale_price = "$".$product['sale_price'];
+                $regular_price = "$".$product['regular_price'];
+                $description = paragraphs($product['description']);
+
+                $img_small = $images[0]['image_filename_sm'];
+                $img_medium = $images[0]['image_filename_md'];
+
+                $pdtsStr .= "<a class='product' onclick=\"single_product(event, {$product['id']})\">
+                    <div class='c-item'>
+                        <div class='thumbnail'>
+                            <img src='./admin/uploads/$img_small' alt='Thumbnail'>
+                            <p>{$product['title']}</p>
+                        </div>
+                        <div class='title'>
+                            <p>{$product['title']}</p>
+                        </div>
+                    </div>
+                </a>";
+            } 
+        }
+
+        if($page == 1) {
+            $prev = $page;
+        } else {
+            $prev = $page - 1;
+        }
+        if($page == $num_of_pages) {
+            $next = $page;
+        } else {
+            $next = $page + 1;
+        }
+
+        $pagingBtns = "<input type='hidden' class='current-page' value='$page'>
+        <input type='hidden' class='num-of-pages' value='$num_of_pages'>
+        <script defer>
+            $('.page-num-current span').text(\"$page/$num_of_pages\");
+        </script>";
+
+
+
+        $pdtsStr .= $pagingBtns;
+
+        
+        $pdtsStr .= "</div></div>";
+
+        echo $pdtsStr;
+    }
+    public function product_images($product_id) {
+
+        // Images
+        $product = $this->get_product($product_id);
+        $images = $product['images'];
+        $description = paragraphs($product['description']);
+
+        $imgStr = "";
+        foreach ($images as $image) {
+            $img_small = $image['image_filename_sm'];
+            $img_large = $image['image_filename_md'];
+            $img_medium = $image['image_filename_lg'];
+            
+            $imgStr .= "<div class='image'>
+                <img src='admin/uploads/$img_medium?v=2' alt=''>
+            </div>";
+        }
+
+        return "<div class='product-images'>	
+            
+                <div class='images-wrapper owl-carousel'>
+                    $imgStr
+                </div>
+                
+                <div class='col-bottom'>
+                    <div class='product-title'>
+                        <h2>{$product['title']}</h2>
+                    </div>
+                    <div class='product-description'>
+                        $description
+                    </div>
+                </div>
+            
+        </div>";
     }
     public function product($product_id) {
         $product = $this->get_product($product_id);
@@ -750,7 +925,92 @@ class Product extends Db {
         echo $merchStr;
     }
 
+    /*
+    public function product_popup($product_id) {
+        $product = $this->get_product($product_id);
+        $images = $product['images'];
 
+        $sale_price = "$".$product['sale_price'];
+        $regular_price = "$".$product['regular_price'];
+        $description = paragraphs($product['description']);
+
+
+        // Images
+        $imgStr = "";
+        if(count($images) > 0) {
+            foreach ($images as $image) {
+                $img_small = $image['image_filename_sm'];
+                $img_large = $image['image_filename_md'];
+                $img_medium = $image['image_filename_lg'];
+                
+                $imgStr .= "<div class='item-slick3' data-thumb='./admin/uploads/$img_small'>
+                    <div class='pic-wrap pos-relative'>
+                        <img src='./admin/uploads/$img_medium' alt='IMG-PRODUCT'>
+                        <a class='expand-arrow' href='./admin/uploads/$img_large'>
+                            <i class='fa fa-expand'></i>
+                        </a>
+                    </div>
+                </div>";
+            }
+        }
+        
+        // Sizes
+        $product_sizes = json_decode($product['size'], true);
+        $sizesStr = "";
+        if(count($product_sizes) > 0) {
+            foreach($product_sizes as $size) {
+                $sizesStr .= "<span style='text-transform: uppercase;' class='size-option $size' data-key='$size' data-value='$size' onclick='select_size(\"$size\")'>$size</span>";
+            }
+        }
+
+        $currently_instock = intval($product['stocks'][0]['quantity']) - intval($product['sold'][0]['quantity']);
+
+        $merchStr = "<div class='row' style='color: #fff;'>
+            <div class='product-images col-md-6 col-lg-6'>
+                <div class='p-l-25 p-r-30 p-lr-0-lg'>
+                    <div class='wrap-slick3 flex-sb flex-w'>
+                        <div class='wrap-slick3-dots'></div>
+                        <div class='wrap-slick3-arrows flex-sb-m flex-w'></div>
+
+                        <div class='slick3 gallery-lb'>
+                            $imgStr
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <form action='' class='product-form col-md-6 col-lg-6' method='post' id=\"order-{$product['id']}\">
+
+                <div class='p-r-50 p-t-5 p-lr-0-lg'>
+                    <p class='pdt-sold'>
+                        In Stock $currently_instock/{$product['stocks'][0]['quantity']}
+                    </p>
+                    <p class='pdt-serial'>
+                        Theme- Winter Drop
+                    </p>
+                    <h2 class='pdt-name'>
+                        {$product['title']}
+                    </h2>
+
+                    <p class='pdt-serial' style='font-size: 16px; color: #7D9EB0;'>
+                        Serial Number #{$product['id']}
+                    </p>
+
+                    <div class='pdt-text'>
+                        $description
+                        <p>USD(incl. of all taxes)</p>
+                    </div>
+
+                    
+                </div>
+            </form>
+        </div>";
+
+
+        // Review tab goes here
+
+        echo $merchStr;
+    }
+    */
     function products_table_header($isIndex=false) {
         if($isIndex == false) {
             return "<div class='content'>
@@ -781,7 +1041,15 @@ class Product extends Db {
         </div>";
     }
     function products_row_html($product_array, $isIndex = false) {
-        $img_sm = $product_array['images'][0]['image_filename_sm'];
+        // Images
+        $num_of_images = count($product_array['images']);
+        if($num_of_images > 0) {
+            $img_sm = $product_array['images'][0]['image_filename_sm'];
+            $img_src = './uploads/'.$img_sm;
+        } else {
+            $img_src = '../assets/placeholder.png';
+        }
+
 
         $sizes = json_decode($product_array['size'], true);
 
@@ -800,7 +1068,7 @@ class Product extends Db {
             return "<div class='c-row' id='product-id-{$product_array['id']}'>
                 <div class='item'>
                     <div class='thumbnail'>
-                        <img src='./uploads/{$img_sm}' alt=''>
+                        <img src='$img_src' alt=''>
                     </div>
                     <span>{$product_array['title']}</span>
                 </div>
@@ -1046,6 +1314,156 @@ class Product extends Db {
         echo $contentStr;
     }
 
+    function my_collection_popup($product_id) {
+        $product = $this->get_product($product_id);
+        $images = $product['images'];
+
+        $sale_price = "$".$product['sale_price'];
+        $regular_price = "$".$product['regular_price'];
+        $description = paragraphs($product['description']);
+
+        // Images
+        $imgStr = "";
+        if(count($images) > 0) {
+            foreach ($images as $image) {
+                $img_small = $image['image_filename_sm'];
+                $img_large = $image['image_filename_md'];
+                $img_medium = $image['image_filename_lg'];
+                
+                $imgStr .= "<div class='item-slick3' data-thumb='./admin/uploads/$img_small'>
+                    <div class='pic-wrap pos-relative'>
+                        <img src='./admin/uploads/$img_medium' alt='IMG-PRODUCT'>
+                        <a class='expand-arrow' href='./admin/uploads/$img_large'>
+                            <i class='fa fa-expand'></i>
+                        </a>
+                    </div>
+                </div>";
+            }
+        }
+        
+        // Sizes
+        $product_sizes = json_decode($product['size'], true);
+        $sizesStr = "";
+        if(count($product_sizes) > 0) {
+            foreach($product_sizes as $size) {
+                $sizesStr .= "<span style='text-transform: uppercase;' class='size-option $size' data-key='$size' data-value='$size' onclick='select_size(\"$size\")'>$size</span>";
+            }
+        }
+
+        $merchStr = "<div class='row' style='color: #fff;'>
+            <div class='product-images col-md-6 col-lg-6'>
+                <div class='p-l-25 p-r-30 p-lr-0-lg'>
+                    <div class='wrap-slick3 flex-sb flex-w'>
+                        <div class='wrap-slick3-dots'></div>
+                        <div class='wrap-slick3-arrows flex-sb-m flex-w'></div>
+
+                        <div class='slick3 gallery-lb'>
+                            $imgStr
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <form action='' class='product-form col-md-6 col-lg-6' method='post' id=\"order-{$product['id']}\">
+
+                <div class='p-r-50 p-t-5 p-lr-0-lg'>
+                    <p class='pdt-sold'>
+                        In Stock {$product['stocks'][0]['quantity']} products & Sold {$product['sold'][0]['quantity']} Products
+                    </p>
+                    <div class='pdt-theme'>
+                        New Winter Drop
+                    </div>
+                    <h2 class='pdt-name'>
+                        {$product['title']}
+                    </h2>
+                    <p class='pdt-serial'>
+                        Serial Number #{$product['id']}
+                    </p>
+
+
+                    <div class='pdt-text'>
+                        $description
+                    </div>
+
+                    
+                </div>
+            </form>
+        </div>";
+
+
+        // Review tab goes here
+
+        echo $merchStr;
+    }
+    public function display_product_drop($product_id) {
+        $product = $this->get_product($product_id);
+        $images = $product['images'];
+        $title = htmlspecialchars($product['title'], ENT_QUOTES, 'UTF-8');
+        $description = paragraphs($product['description']);
+        
+        // Product Image Carousel
+        $imgStr = "";
+        
+        if (!empty($images)) {
+            foreach ($images as $image) {
+                $img_medium = htmlspecialchars($image['image_filename_md'], ENT_QUOTES, 'UTF-8');
+                
+                $imgStr .= "<div class='image'>
+                    <img src='admin/uploads/$img_medium?v=2' alt='Product Image'>
+                </div>";
+            }
+        }
+    
+        // Product Section
+        $productSection = "<div class='col-left'>
+            <div class='images-wrapper-outer'>
+                <div class='images-wrapper owl-carousel'>
+                    $imgStr
+                </div>
+                
+                <div class='product-details-overlay p-r-50 p-t-5 p-lr-0-lg'>
+                    <p class='pdt-sold'>
+                        In Stock {$product['stocks'][0]['quantity']} products & Sold {$product['sold'][0]['quantity']} Products
+                    </p>
+                    <div class='pdt-theme'>
+                        New Winter Drop
+                    </div>
+                    <h2 class='pdt-title'>
+                        {$product['title']}
+                    </h2>
+                    <p class='pdt-serial'>
+                        Serial Number #{$product['id']}
+                    </p>
+                    <div class='pdt-text'>
+                        $description
+                    </div>
+
+                    
+                </div>
+            </div>
+            <div class='col-bottom'>
+                <div class='product-title'>
+                    <h2>$title</h2>
+                </div>
+                <div class='product-description'>
+                    $description
+                </div>
+            </div>
+        </div>";
+    
+        // Collection Section
+        $collectionHtml = $this->collection_drop();
+        
+    
+        // Final Layout
+        echo "<div class='collection-inner'>
+            $productSection
+            <div class='col-right'>
+                <div class='collection'>
+                    $collectionHtml
+                </div>
+            </div>
+        </div>";
+    }
     /*
     =================================================================
         SEARCH

@@ -11,16 +11,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $filename = basename($imageUrl);
     $uploadDir = 'uploads/';
 
+    include '../functions.php';
+    include '../Classes/Db.php';
+    include '../Classes/News.php';
+        
     // Remove the file from the uploads directory
     if (file_exists($uploadDir . $filename)) {
         unlink($uploadDir . $filename);
-        include '../functions.php';
-        include '../Classes/Db.php';
-        include '../Classes/News.php';
-        
-        $p = new MyApp\Classes\News;
-        $p->delete_news_image($data['news_id'], $filename);
     }
+        
+    $p = new MyApp\Classes\News;
+    $p->delete_news_image($data['news_id'], $filename);
 
     // Update the session to remove the image name
     if (isset($_SESSION['uploads'])) {

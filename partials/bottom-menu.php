@@ -85,7 +85,7 @@
                     'About' => 'about',
                     'Collections' => 'collections',
                     'News' => 'news',
-                    'Mailing list' => 'mailing-list',
+                    'SMS list' => 'mailing-list',
                     'My Collection' => 'my-collection',
                 ];
 

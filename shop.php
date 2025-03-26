@@ -4,17 +4,10 @@
 ?>
 
 <style>
-    .page-wrapper {
-        padding: 20px 20px 50px 20px;
-        min-height: 100vh;
-        width: 100%;
-        background: rgba(29, 37, 52, .8);
-    }
     .shop-section-outer {
         max-width: 1400px;
         margin: 80px auto;
     }
-
     @media screen and (min-width: 1280px) {
         .shop-section-outer {
             max-width: 1400px;

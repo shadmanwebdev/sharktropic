@@ -2,14 +2,6 @@
     include './header.php';
 ?>
 
-
-
-
-
-
-
-
-
 <!-- DELETE POPUP -->
 <div id='deletePopup' class='hide_popup popup'>
     

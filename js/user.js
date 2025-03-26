@@ -168,7 +168,7 @@ function signup() {
                 console.log(response);
 
                 if($.trim(response) == '1') {
-                    window.location.href = './signup-confirmation?code=1&status=success';
+                    window.location.href = './verify-email';
                 } 
                 else {
                     $('#ms-response-2').html("<div class='error'>Invalid email or password</div>");

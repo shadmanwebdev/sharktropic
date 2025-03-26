@@ -378,7 +378,7 @@ class News extends Db {
     
                 $newsStr .= "<div class='news-section' data-num='$cur_item_num/$num_of_rows'>
                     <div class='col-left'>
-                        <div class='images-wrapper owl-carousel'>
+                        <div class='images-wrapper'>
                             $imgStr
                         </div>
                     </div>
@@ -426,13 +426,16 @@ class News extends Db {
         </div>";
     }
     function newss_row_html($news_array, $isIndex = false) {
-        $dt = $this->convertDateFormat($news_array['created_at']);
-
-        if(count($news_array['images']) > 0) {
+        // Images
+        $num_of_images = count($news_array['images']);
+        if($num_of_images > 0) {
             $img_sm = $news_array['images'][0]['image_filename_sm'];
+            $img_src = './uploads/'.$img_sm;
         } else {
-            $img_sm = 'placeholder.png';
+            $img_src = '../assets/placeholder.png';
         }
+        
+        $dt = $this->convertDateFormat($news_array['created_at']);
 
         $description = limitWords($news_array['description'], 5, 5);
 
@@ -441,7 +444,7 @@ class News extends Db {
             <div class='c-row' id='news-id-{$news_array['id']}'>
                 <div class='item'>
                     <div class='thumbnail'>
-                        <img src='./uploads/$img_sm' alt='News Image'>
+                        <img src='$img_src' alt='News Image'>
                     </div>
                     <div class='text'>
                         <div class='title'>{$news_array['title']}</div>

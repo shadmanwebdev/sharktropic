@@ -5,83 +5,6 @@
 
 
 
-
-
-
-<style>
-    .page-wrapper {
-        padding: 20px 20px 50px 20px;
-        min-height: 100vh;
-        width: 100%;
-        background: rgba(29, 37, 52, .8);
-    }
-
-    .logo-outer {
-        max-width: 1440px;
-        margin: 0px auto 50px auto;
-        display: flex;
-        /* text-align: center; */
-        flex-flow: column nowrap;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .logo-outer .logo {
-        max-width: 250px;
-        margin-left: -20px;
-    }
-    .dt-now {
-        font-size: 16px;
-        font-weight: 500;
-        line-height: 1.35;
-        margin-top: 15px;
-        margin-left: 35px;
-        color: rgba(255, 255, 255, 1);
-    }
-
-    .section-num {
-        display: none;
-        font-size: 25px;
-        font-weight: 300;
-        color: #fff;    
-        margin-top: 55px;
-        margin-right: 95px;
-        /* margin-bottom: 120px; */
-    }
-    @media screen and (min-width: 1280px) {
-        .logo-outer {
-            max-width: 1440px;
-            margin: 0px auto 50px auto;
-            display: flex;
-            flex-flow: row nowrap;
-            justify-content: space-between;
-            /* width: 100%;
-            padding: 0px 100px 0px 100px; */
-        }
-        .logo-outer .logo {
-            max-width: 300px;
-            margin-left: 0px;
-        }
-        .dt-now {
-            font-size: 18px;
-            font-weight: 500;
-            line-height: 1.35;
-            margin-top: 10px;
-            margin-left: 25px;
-            color: rgba(255, 255, 255, 1);
-        }
-
-        
-        .section-num {
-            display: block;
-            
-            margin-top: 74px;
-
-            margin-right: 160px;
-        }
-    }
-</style>
-
-
 <style>
     .news-outer {
         max-width: 1400px;
@@ -102,6 +25,7 @@
         margin-left: 0px;
     }
     .news-section .images-wrapper {
+        position: relative;
         width: 100%;
         height: 100%;
         border-radius: 30px;
@@ -294,14 +218,9 @@
 <div class='page-wrapper'>
 
     <div class='logo-outer'>
-        <div class="logo float-left">
-            <a href="./">
-                <!-- Logo -->
-                <img src="assets/logo.png?v=1" alt="" class="img-fluid">
-            </a>
-            <div class='dt-now'>03/17/2024 1:33am DMV</div>
-        </div>
-
+        <?php
+            include './logo-with-datetime.php';
+        ?>
         
         <div class='section-num'>
             <?php

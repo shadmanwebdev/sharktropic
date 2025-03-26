@@ -1,6 +1,10 @@
 {
     "require": {
         "stripe/stripe-php": "^15.1",
-        "phpmailer/phpmailer": "^6.9"
+        "phpmailer/phpmailer": "^6.9",
+        "twilio/sdk": "^8.3",
+        "getbrevo/brevo-php": "2.0",
+        "guzzlehttp/guzzle": "7.9",
+        "google/apiclient": "2.15.0"
     }
 }

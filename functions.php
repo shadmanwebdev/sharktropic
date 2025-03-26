@@ -898,7 +898,7 @@
     =================================================================  
     */ 
     function percentage($part, $total) {
-        return ( $part / $total ) * 100;
+        return intval(( $part / $total ) * 100);
     }
     function part($part, $total) {
         return ( $total * $part ) / 100;
@@ -1053,10 +1053,10 @@
     */
     
     function countWords($text) {
-        // Remove any extra white spaces from the beginning and end of the text
+        // Remove any extra white spaces from the beginning and end
         $text = trim($text);
     
-        // Check if the text is empty
+        // Check if empty
         if (empty($text)) {
             return 0;
         }

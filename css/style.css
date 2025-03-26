@@ -1,8 +1,22 @@
 body {
     min-height: 100vh;
-    background-image: url('../assets/background-resized.jpg');
+    background-image: url('../assets/background-pattern-2.svg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
     word-break: break-word;
+}
+.home {
+    background: rgb(1 11 30 / 75%);
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+}
+.page-wrapper {
+    background: rgb(1 11 30 / 75%);
+    min-height: 100vh;
+    width: 100%;
+    padding: 20px 20px 50px 20px;
 }

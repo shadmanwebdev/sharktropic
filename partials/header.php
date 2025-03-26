@@ -30,6 +30,7 @@
     include(CLASSES_PATH.'News.php');
     include(CLASSES_PATH.'Order.php');
     include(CLASSES_PATH.'StripePayment.php');
+    include(CLASSES_PATH.'Donations.php');
 
     $stgs = new MyApp\Classes\SiteSettings;
 
@@ -62,7 +63,7 @@
     <link rel="stylesheet" href="css/owl.theme.default.min.css?v=1000">
 
     <!-- <link rel="stylesheet" href="css/announcement.css?v=300"> -->
-    <link rel="stylesheet" href="css/style.css?v=65">
+    <link rel="stylesheet" href="css/style.css?v=67">
     <link rel="stylesheet" href="css/popup.css?v=62">
     <link rel="stylesheet" href="css/loader.css?v=63">
     <link rel="stylesheet" href="css/form-response.css?v=63"> 
@@ -114,7 +115,7 @@
     <script src="js/main.js"></script>
     <script src="js/popup.js"></script>
     <script src="js/form.js"></script>
-    <script src="js/user.js?v=20"></script>
+    <script src="js/user.js?v=30"></script>
     <script src="js/product.js?v=35"></script>
 
 

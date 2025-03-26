@@ -442,7 +442,7 @@
                     <div class="stats-inner-div">
                         
                                                 
-                        <style>
+                    <style>
                             .cards {
                                 max-width: 100%;
                                 margin: 0px auto 20px auto;
@@ -479,11 +479,20 @@
                                 font-weight: bold;
                                 margin: 0;
                             }
-                            .card .icon {
-                                background-color: #fef1e1;
-                                border-radius: 50%;
+                            .icon-wrapper {
                                 width: 45px;
-                                height: 45px;
+                                height: 45px; 
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                border-radius: 50%;
+                                overflow: hidden;
+                                background-color: #394A67;
+                            }
+                            .card .icon {
+                                background-color: transparent;
+                                width: 25px;
+                                height: 25px;
                                 display: flex;
                                 justify-content: center;
                                 align-items: center;
@@ -501,45 +510,10 @@
                             }
                         </style>
 
-                        <div class="cards">
-                            <div class="card">
-                                <div class="text">
-                                    <p class="title">Total Revenue</p>
-                                    <p class="value">$45,980</p>
-                                </div>
-                                <div class="icon">
-                                    <img src="assets/revenue.svg?v=2" alt="">
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="text">
-                                    <p class="title">Total Visitor</p>
-                                    <p class="value">2,456</p>
-                                </div>
-                                <div class="icon">
-                                    <img src="assets/users.svg" alt="">
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="text">
-                                    <p class="title">Total Products</p>
-                                    <p class="value">358</p>
-                                </div>
-                                <div class="icon">
-                                    <img src="assets/products.svg?v=2" alt="">
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="text">
-                                    <p class="title">Total News</p>
-                                    <p class="value">243</p>
-                                </div>
-                                <div class="icon">
-                                    <img src="assets/news.svg" alt="">
-                                </div>
-                            </div>
-                        </div>
-
+                        <?php
+                            $order = new MyApp\Classes\Order;
+                            $order->order_cards();
+                        ?>
 
                         <!-- Bar Chart (Chart 2 in index.php) -->
                         <style>

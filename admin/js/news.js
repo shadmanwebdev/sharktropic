@@ -297,6 +297,7 @@ function get_popup_content_edit_news(id) {
             $('#deletePopup').html(response);
             // Show Pop Up
             popup('deletePopup');
+            initializeImageEvents();
         // }, 500);
     })
     .catch( err => console.log(err));

@@ -1,61 +1,6 @@
 <?php
     include './partials/header.php';
-    // require 'vendor/autoload.php';
 ?>
-
-<?php
-    // include './partials/announcement.php';
-?>
-
-<?php 
-    // include './partials/navigation-2.php'; 
-?>
-
-<?php 
-    // include './partials/cover-section.php'; 
-?>
-
-
-
-
-
-<style>
-    .page-wrapper {
-        padding: 20px 20px 50px 20px;
-        min-height: 100vh;
-        width: 100%;
-        background: rgba(29, 37, 52, .8);
-    }
-    .logo-outer {
-        width: 100%;
-        padding: 0px 50px 0px 50px;
-        margin-bottom: 50px;
-    }
-    .logo {
-        display: flex;
-        flex-flow: column nowrap;
-        align-items: center;
-    }
-    .dt-now {
-        font-size: 18px;
-        font-weight: 500;
-        line-height: 1.35;
-        margin-top: 10px;
-        margin-left: 25px;
-        color: rgba(255, 255, 255, 1);
-    }
-    @media screen and (min-width: 576px) { 
-        .logo-outer {
-            width: 100%;
-            padding: 0px 100px 0px 100px;
-            margin-bottom: 0px;
-        }
- 
-        .logo {
-            display: block;
-        }
-    }
-</style>
 
 
 <style>
@@ -101,17 +46,13 @@
     }
 </style>
 
+
 <div class='page-wrapper'>
 
-
     <div class='logo-outer'>
-        <div class="logo float-left">
-            <a href="./">
-                <!-- Logo -->
-                <img src="assets/logo.png?v=1" alt="" class="img-fluid">
-            </a>
-            <div class='dt-now'>03/17/2024 1:33am DMV</div>
-        </div>
+        <?php
+            include './logo-with-datetime.php';
+        ?>
     </div>
 
     <div class="about-sections">

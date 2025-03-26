@@ -27,7 +27,10 @@
                     '' => 'Dashboard',
                     'orders' => 'Orders',
                     'products' => 'Products',
-                    'news' => 'News'
+                    'news' => 'News',
+                    'subscribers' => 'Subscribers',
+                    'create-coupon-code' => 'Create coupon code',
+                    'donation' => 'Donation'
                 );
 
                 $pagename = get_pagename();

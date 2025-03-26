@@ -12,7 +12,7 @@
 
     // Create Account
     if(isset($_POST['signup'])) {
-        $user->create_account();
+        $user->create();
     }
     // Login
     if(isset($_POST['login'])) {
@@ -90,6 +90,9 @@
     }
     if(isset($_GET['deladmin'])) {
         $user->delete($_GET['deladmin']);
+    }
+    if(isset($_POST['verify_login'])) {
+        $user->verify_email();
     }
 
     // Update User Details

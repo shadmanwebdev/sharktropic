@@ -1,11 +1,5 @@
 
 <style>
-    .page-wrapper {
-        padding: 20px 20px 50px 20px;
-        min-height: 100vh;
-        width: 100%;
-        background: rgba(29, 37, 52, .8);
-    }
     .logo-outer {
         max-width: 1440px;
         margin: 0px auto 50px auto;
@@ -19,13 +13,16 @@
     }
     .logo-outer .logo {
         max-width: 210px;
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
     }
     .dt-now {
         font-size: 14px;
         font-weight: 500;
         line-height: 1.35;
         margin-top: 10px;
-        margin-left: 25px;
+        margin-left: 8px;
         color: rgba(255, 255, 255, 1);
     }
     .section-num {
@@ -39,6 +36,9 @@
     @media screen and (min-width: 1280px) {
         .logo-outer {
             flex-flow: row nowrap;
+        }
+        .logo-outer .logo {
+            align-items: flex-start;
         }
         .dt-now {
             font-size: 16px;
@@ -98,7 +98,7 @@
             font-size: 18px;
         }
         #preview-drop {
-            margin: 81px 135px 0 auto;
+            margin: 60px 135px 0 auto;
         }
     }
 
@@ -108,11 +108,47 @@
     <div class="logo float-left">
         <a href="./">
             <!-- Logo -->
-            <img src="assets/logo.png?v=1" alt="" class="img-fluid">
+            <img src="assets/logo-new.svg?v=1" alt="" class="img-fluid">
         </a>
-        <div class='dt-now'>03/17/2024 1:33am DMV</div>
+        <div class='dt-now' id="currentDateTime"></div>
     </div>
 
     
-    <button id='preview-drop'>Preview Drop</button>
+    <a href='./drop' id='preview-drop'>Preview Drop</a>
 </div>
+
+
+
+
+
+
+<!-- Live Datetime -->
+<script defer>
+    function updateDateTime() {
+        const now = new Date();
+        
+        // Format date as mm/dd/yyyy
+        const month = (now.getMonth() + 1).toString().padStart(2, '0');
+        const day = now.getDate().toString().padStart(2, '0');
+        const year = now.getFullYear();
+        const dateString = `${month}/${day}/${year}`;
+        
+        // Format time separately
+        const timeString = now.toLocaleString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true,
+            timeZone: 'America/New_York'
+        });
+        
+        // Extract just the time portion without using split
+        const timeOnly = timeString.match(/\d{1,2}:\d{2}:\d{2} [AP]M/)[0];
+        
+        document.getElementById("currentDateTime").textContent = `${dateString} ${timeOnly}`;
+    }
+
+    // Update the date and time immediately, then every second
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+</script>

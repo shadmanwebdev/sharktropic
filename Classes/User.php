@@ -6,7 +6,7 @@
     DISPLAY
     LOGIN / LOGOUT
     ADMIN
-    ORDER
+    ORDER verify_email(
 =================================================================  
 */
 
@@ -107,39 +107,6 @@ class User extends Db {
         $userId = $stmtUsers->insert_id;
         $stmtUsers->close();
         echo $status;
-    }
-    public function sendEmailPHPMailer($host, $port, $encryption, $username, $pwd, $to, $subject, $msgBody) {        // Enable error reporting
-        // error_reporting(E_ALL);
-        // ini_set('display_errors', 1);
-
-        // Create PHPMailer instance
-        $mail = new PHPMailer(true); // Passing true enables exceptions
-
-        try {
-            // SMTP configuration
-            $mail->isSMTP();
-            $mail->Host = $host;
-            $mail->SMTPAuth = false;
-            $mail->Username = $username;
-            $mail->Password = $pwd;
-            $mail->SMTPSecure = $encryption; // Enable TLS encryption, 'ssl' also accepted
-            $mail->Port = $port;
-    
-            // Sender and recipient
-            $mail->setFrom($username, 'Spotzy');
-            $mail->addAddress($to); // Recipient's email
-    
-            // Email content
-            $mail->isHTML(true); // Set email format to HTML
-            $mail->Subject = $subject;
-            $mail->Body = $msgBody;
-            // var_dump($mail);
-            // Send email
-            $mail->send();
-            // echo 'Email sent successfully to ' . $to;
-        } catch (Exception $e) {
-            echo 'Email could not be sent. Mailer Error: ' . $mail->ErrorInfo;
-        }
     }
     /*
     =================================================================
@@ -257,7 +224,9 @@ class User extends Db {
     */
     public function create() {
         $this->startSession();
+
         $duplicate = $this->duplicate_email($_POST['email']);
+
         // echo $duplicate;
         if($duplicate == '1') {
             $status = '2';
@@ -296,31 +265,26 @@ class User extends Db {
                     'account_status' => 'pending',
                     'access_level' => '',
                 );
+                
                 $_SESSION['user'] = json_encode($userdata, true);
-                // SEND EMAIL
-                $url = $this->generateVerificationLink($_POST['email']);
-                $_SESSION['url'] = $url;
-                if(
-                    $_SERVER['SERVER_NAME'] != 'localhost' &&
-                    $_SERVER['SERVER_NAME'] != 'sql100.infinityfree.com'
-                ) {
+                
+                if($_SERVER['SERVER_NAME'] != 'localhost') {
                     $check_email = $this->email_exists($_POST['email']);
+                
                     if($check_email == '1') {
 
-                        $subject = 'Email verification';
-                        $msgBody = "<p>Your email verification link: </p>
-                        <a href='$url'>$url</a>";
-            
-                        $smtp_details = $this->smtp_details();
-            
-                        $host = $smtp_details['smtp_host'];
-                        $encryption = $smtp_details['smtp_encryption'];
-                        $port = $smtp_details['smtp_port'];
-                        $username = $smtp_details['username'];
-                        $pwd = $smtp_details['pwd'];
-            
-                        sendEmailSwiftMailer($host, $port, $encryption, $username, $pwd, $_POST['email'], $subject, $msgBody);
+                        // Create + Insert code
+                        $code = $this->generate_code($user_id);
+
+                        // Email Content
+                        $subject = 'Verification Code';
+                        $msgBody = "<p>This is your code: </p>
+                        <h4>$code</h4>";
+                        $_SESSION['code'] = $code;
+                        
                         $status = '1';
+                        // Brevo
+                        $this->emailWithSendinblue($fullname, $email, $subject, $msgBody);
                     } else {
                         $status = '0';
                     }
@@ -331,12 +295,131 @@ class User extends Db {
                 die('prepare() failed: ' . htmlspecialchars($this->con->error));
                 die('bind_param() failed: ' . htmlspecialchars($stmt->error));
                 die('execute() failed: ' . htmlspecialchars($stmt->error));
+                
                 $status = '2';
             }
         }
+                
         echo $status;
     }
+    public function signup_with_google($email, $name, $profile_picture, $google_id) {
+        session_start(); // Start session at the beginning
+        $created_at = datetime_now();
+        $updated_at = $created_at;
+
+        $account_status = 'verified';
     
+        // Check if user already exists
+        $stmt = $this->con->prepare("SELECT id FROM users WHERE google_id = ? OR email = ?");
+        $stmt->bind_param('ss', $google_id, $email);
+        $stmt->execute();
+        $stmt->store_result();
+        
+        if ($stmt->num_rows > 0) {
+            // User exists, update details
+            $stmt->bind_result($user_id);
+            $stmt->fetch();
+            $stmt->close();
+    
+            $stmt = $this->con->prepare("UPDATE users SET google_id = ?, fullname = ?, photo = ?, updated_at = ? WHERE id = ?");
+            $stmt->bind_param('ssssi', $google_id, $name, $profile_picture, $updated_at, $user_id);
+            $stmt->execute();
+            $stmt->close();
+        } else {
+            // Insert new user
+            $stmt->close();
+            $stmt = $this->con->prepare("INSERT INTO users (google_id, fullname, email, photo, account_status, created_at) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param('ssssss', $google_id, $name, $email, $profile_picture, $account_status, $created_at);
+            $stmt->execute();
+            $user_id = $this->con->insert_id;
+            $stmt->close();
+        }
+    
+        // Store user in session
+        $_SESSION['user'] = json_encode([
+            'logged' => 1,
+            'uid' => $user_id,
+            'fullname' => $name,
+            'email' => $email,
+            'photo' => '',
+            'user_status' => 'member',
+            'account_status' => 'verified',
+            'access_level' => '',
+        ]);
+    
+        // Redirect after session is set
+        header('Location: https://testserver.great-site.net/sharktropic/');
+        exit;
+    }
+    public function emailWithSendinblue($name, $email, $subject, $content) {
+        $config = '../config.php';
+        
+        $apiKey = $config['BREVO_API_KEY'];
+
+        // Set up the Sendinblue configuration
+        $config = \Brevo\Client\Configuration::getDefaultConfiguration()->setApiKey('api-key', $apiKey);
+
+        // Create an API instance
+        $apiInstance = new \Brevo\Client\Api\TransactionalEmailsApi(
+            new \GuzzleHttp\Client(),
+            $config
+        );
+        
+        // Prepare the email data
+        $sendSmtpEmail = new \Brevo\Client\Model\SendSmtpEmail([
+            'subject' => $subject,
+            'sender' => ['name' => 'Mind Rapture', 'email' => 'testemail6330@gmail.com'],
+            'replyTo' => ['name' => 'Mind Rapture', 'email' => 'testemail6330@gmail.com'],
+            'to' => [
+                ['name' => $name, 'email' => $email]
+            ],
+            'htmlContent' => $content
+        ]);
+    
+        // var_dump($sendSmtpEmail);
+        try {
+            // Send the email via the Sendinblue API
+            $result = $apiInstance->sendTransacEmail($sendSmtpEmail);
+            // var_dump($result);  // Inspect this variable to understand the API response
+            // echo "Email sent successfully!";
+        } catch (Exception $e) {
+            // echo 'Exception when calling TransactionalEmailsApi->sendTransacEmail: ', $e->getMessage(), PHP_EOL;
+        }
+    }
+    public function sendEmailPHPMailer($host, $port, $encryption, $username, $pwd, $to, $subject, $msgBody) {        // Enable error reporting
+        
+        error_reporting(E_ALL);
+        ini_set('display_errors', 1);
+
+        // Create PHPMailer instance
+        $mail = new PHPMailer(true); // Passing true enables exceptions
+
+        try {
+            // SMTP configuration
+            $mail->isSMTP();
+            $mail->Host = $host;
+            $mail->SMTPAuth = false;
+            $mail->Username = $username;
+            $mail->Password = $pwd;
+            $mail->SMTPSecure = $encryption; // Enable TLS encryption, 'ssl' also accepted
+            $mail->Port = $port;
+    
+            // Sender and recipient
+            $mail->setFrom($username, 'Mind Rapture');
+            $mail->addAddress($to);
+    
+            // Email content
+            $mail->isHTML(true);
+            $mail->Subject = $subject;
+            $mail->Body = $msgBody;
+            // var_dump($mail);
+            // Send email
+            $mail->send();
+            echo 'Email sent successfully to ' . $to;
+        } catch (Exception $e) {
+            echo 'Email could not be sent. Mailer Error: ' . $mail->ErrorInfo;
+        }
+    }
     public function update_user() {
         $id = get_uid();
 
@@ -490,6 +573,8 @@ class User extends Db {
         $stmt->close();
         echo $status;
     }
+    
+
     public function logout() {
         $this->startSession();
         $this->endSession();
@@ -851,7 +936,9 @@ class User extends Db {
         } else {
             $next = $page + 1;
         }
-        
+
+        $statusClass = 'user-status';
+
         for($x=$starting_limit_number; $x<$starting_limit_number+$results_per_page; $x++) {
             if($x < $num_of_rows) {
                 $user = $users[$x];
@@ -1204,7 +1291,7 @@ class User extends Db {
         // Set the desired timezone (e.g., 'America/New_York')
         $timezone = 'America/New_York';
         // Create a DateTime object with the desired timezone
-        $date = new DateTime('now', new DateTimeZone($timezone));
+        $date = new \DateTime('now', new \DateTimeZone($timezone));
         // Get the Unix timestamp for the current time in the specified timezone
         $current_date = $date->format('U');
 
@@ -1359,15 +1446,15 @@ class User extends Db {
         return $url;
         
     }
-    public function verify_login() {
+    public function verify_email() {
         $this->startSession();
 
         if($_SERVER['SERVER_NAME'] != 'localhost') {
             // Get the user ID from the get_uid() function
-            $user_id = $this->get_uid(); // Assuming you have implemented the get_uid() function
+            $user_id = $this->get_uid();
             
             // Get the verification code from the $_POST['code'] variable
-            $verification_code = $_POST['code']; // Assuming the verification code is sent via POST
+            $verification_code = $_POST['code'];
             
             // Get the current timestamp
             $current = date("U"); 
@@ -1453,6 +1540,74 @@ class User extends Db {
 
 
 
+    public function verify_phone() {
+        $this->startSession();
+
+        if($_SERVER['SERVER_NAME'] != 'localhost') {
+            // Get the user ID from the get_uid() function
+            $user_id = $this->get_uid();
+            
+            // Get the verification code from the $_POST['code'] variable
+            $verification_code = $_POST['code'];
+            
+            // Get the current timestamp
+            $current = date("U"); 
+            
+            
+            // Prepare the SELECT statement to fetch the matching row
+            $stmt = $this->con->prepare("SELECT * FROM phone_verify WHERE user_id = ? AND code = ? AND expires >= ? LIMIT 1");
+            $stmt->bind_param('iss', $user_id, $verification_code, $current);
+            $stmt->execute();
+            
+            // Get the result
+            $result = $stmt->get_result();
+            
+            if ($result->num_rows > 0) {
+                // Fetch the row
+                $row = $result->fetch_assoc();
+                
+                // Check if the verification code matches
+                if ($verification_code === $row['code']) {
+                    // Check if the current timestamp is smaller than or equal to the expiration timestamp
+                    if ($current <= $row['expires']) {
+                        // Update the session data
+                        $userdata = json_decode($_SESSION['user'], true);
+                        $userdata['logged'] = 1;
+                        
+                        // Update the user cookie if it is set
+                        if (isset($_COOKIE['user'])) {
+                            $cookieData = json_decode($_COOKIE['user'], true);
+                            $cookieData['logged'] = 1;
+                            setcookie("user", json_encode($cookieData), time() + (10 * 365 * 24 * 60 * 60), '/');
+                        }
+                        
+                        // Set the new user session data
+                        $_SESSION['user'] = json_encode($userdata);
+
+                        $status = '1';
+                    } else {
+                        $status = '2';
+                    }
+                } else {
+                    $status = '3';
+                }
+            } else {
+                $status = '4';
+            }
+            // Close the statement
+            $stmt->close();
+            
+            // Delete rows with the matching user ID
+            $stmt = $this->con->prepare("DELETE FROM phone_verify WHERE user_id = ?");
+            $stmt->bind_param('i', $user_id);
+            $stmt->execute();
+            $stmt->close();
+        } else {
+            $status = '1';
+        }
+
+        echo $status;
+    }
 
 
     /*

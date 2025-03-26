@@ -8,7 +8,7 @@
     UPDATE PRODUCT
     
     DISPLAY
-
+orders_admin()
 update_order_status(
     -> create_order()
     1. User logged in
@@ -760,7 +760,7 @@ class Order extends Db {
 
                 $image_filename = $item['image_filename_sm'];
                 
-                $itemStr .= "<div class='c-row'>
+                $itemStr .= "<div class='c-row' onclick='get_product_popup(event, \"{$item['product_id']}\")'>
                     <div class='item'>
                         <div class='thumbnail'>
                             <img src='admin/uploads/{$image_filename}' alt=''>
@@ -774,23 +774,109 @@ class Order extends Db {
         }
         echo $itemStr;
     }
-    function my_donation() {
-        $my_orders_total = $this->my_orders_total();
 
-        echo "<div class='my-donation'>
-            <div class='title'>
-                My Donation
+    private function get_order_statistics() {
+        // Array to hold the results
+        $statistics = array(
+            'total_orders' => 0,
+            'status_counts' => array(
+                'Started' => 0,
+                'Delivered' => 0,
+                'Shipped' => 0,
+                'Paid' => 0,
+                'Canceled' => 0,
+            )
+        );
+    
+        // SQL query to count total orders and orders by status
+        $sql = "SELECT 
+                    COUNT(*) AS total_orders,
+                    SUM(CASE WHEN order_status = 'Started' THEN 1 ELSE 0 END) AS started_count,
+                    SUM(CASE WHEN order_status = 'Delivered' THEN 1 ELSE 0 END) AS delivered_count,
+                    SUM(CASE WHEN order_status = 'Shipped' THEN 1 ELSE 0 END) AS shipped_count,
+                    SUM(CASE WHEN order_status = 'Paid' THEN 1 ELSE 0 END) AS paid_count,
+                    SUM(CASE WHEN order_status = 'Canceled' THEN 1 ELSE 0 END) AS canceled_count
+                FROM orders";
+    
+        $stmt = $this->con->prepare($sql);
+        if (!$stmt) {
+            die("Error in SQL: " . $this->con->error);
+        }
+    
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        // Fetch the result
+        if ($row = $result->fetch_assoc()) {
+            $statistics['total_orders'] = $row['total_orders'];
+            $statistics['status_counts']['Started'] = $row['started_count'];
+            $statistics['status_counts']['Delivered'] = $row['delivered_count'];
+            $statistics['status_counts']['Shipped'] = $row['shipped_count'];
+            $statistics['status_counts']['Paid'] = $row['paid_count'];
+            $statistics['status_counts']['Canceled'] = $row['canceled_count'];
+        }
+    
+        $stmt->close();
+    
+        // Return the statistics array
+        return $statistics;
+    }
+    
+    function order_cards() {
+        $stats = $this->get_order_statistics();
+
+        $total_orders = $stats['total_orders'];
+        $delivered = $stats['status_counts']['Delivered'];
+        $shipped = $stats['status_counts']['Shipped'];
+        $paid = $stats['status_counts']['Paid'];
+
+        echo "<div class='cards'>
+            <div class='card'>
+                <div class='text'>
+                    <p class='title'>Total Orders</p>
+                    <p class='value'>$total_orders</p>
+                </div>
+                <div class='icon-wrapper'>
+                    <div class='icon'>
+                        <img src='assets/order-icons/total-orders.svg?v=2' alt=''>
+                    </div>
+                </div>
             </div>
-            <div class='image-wrapper'>
-                <img src='./assets/my-donation.svg' alt=''>
+            <div class='card'>
+                <div class='text'>
+                    <p class='title'>Delivered</p>
+                    <p class='value'>$delivered</p>
+                </div>
+                <div class='icon-wrapper'>
+                    <div class='icon'>
+                        <img src='assets/order-icons/delivered-orders.svg?v=2' alt=''>
+                    </div>
+                </div>
             </div>
-            <div class='middle'>
-                <h2>SAVE THE SHARKS</h2>
-                <p>Total Contributed: $"."$my_orders_total</p>
+            <div class='card'>
+                <div class='text'>
+                    <p class='title'>Shipped</p>
+                    <p class='value'>$shipped</p>
+                </div>
+                <div class='icon-wrapper'>
+                    <div class='icon'>
+                        <img src='assets/order-icons/shipped-orders.svg?v=2' alt=''>
+                    </div>
+                </div>
+            </div>
+            <div class='card'>
+                <div class='text'>
+                    <p class='title'>Paid</p>
+                    <p class='value'>$paid</p>
+                </div>
+                <div class='icon-wrapper'>
+                    <div class='icon'>
+                        <img src='assets/order-icons/paid-orders.svg?v=2' alt=''>
+                    </div>
+                </div>
             </div>
         </div>";
     }
-
     // Admin
     function orders_table_header($isIndex=false) {
         if($isIndex == false) {

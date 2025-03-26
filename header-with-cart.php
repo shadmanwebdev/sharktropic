@@ -12,7 +12,7 @@
         font-weight: 500;
         line-height: 1.35;
         margin-top: 10px;
-        margin-left: 25px;
+        margin-left: 8px;
         color: rgba(255, 255, 255, 1);
     }
 
@@ -40,7 +40,7 @@
     <div class="logo float-left">
         <a href="./">
             <!-- Logo -->
-            <img src="assets/logo.png?v=1" alt="" class="img-fluid">
+            <img src="assets/logo-new.svg?v=1" alt="" class="img-fluid">
         </a>
         <div class='dt-now'>03/17/2024 1:33am DMV</div>
     </div>

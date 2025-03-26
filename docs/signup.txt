@@ -1,0 +1,9 @@
+Signup 
+-> signup()
+-> create() (user-handler.php)
+    -> generate_code($user_id)
+    -> Sends code via email/phone sendEmailSwiftMailer()
+-> verify-email.php (redirect on success)
+-> verify()
+-> verify_email() (user-handler.php)
+-> verification.php (redirect on success)

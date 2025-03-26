@@ -52,8 +52,8 @@
                 autoplaySpeed: 6000,
                 arrows: true,
                 appendArrows: $(wrapSlick1),
-                prevArrow:"<button class='arrow-slick1 prev-slick1'><img src='../images/icons/angle-left.svg' alt='' /></button>",
-                nextArrow:"<button class='arrow-slick1 next-slick1'><img src='../images/icons/angle-right.svg' alt='' /></button>",
+                prevArrow:"<button class='arrow-slick1 prev-slick1'><img src='assets/heroicons_arrow-up-16-solid.svg' alt='' /></button>",
+                nextArrow:"<button class='arrow-slick1 next-slick1'><img src='assets/heroicons_arrow-up-16-solid.sv' alt='' /></button>",
                 dots: showDot,
                 appendDots: $(wrapSlick1).find('.wrap-slick1-dots'),
                 dotsClass:'slick1-dots',
@@ -152,8 +152,8 @@
 
                 arrows: true,
                 // appendArrows: $(this).find('.wrap-slick3-arrows'),
-                prevArrow:"<div class='arrow-wrapper arrow-slick3 prev-slick3 '><img class='arrow-img filter-wh' src='./images/icons/angle-left.svg' alt='' /></div>",
-                nextArrow:"<div class='arrow-wrapper arrow-slick3 next-slick3 '><img class='arrow-img filter-wh' src='./images/icons/angle-right.svg' alt='' /></div>",
+                prevArrow:"<div class='arrow-wrapper arrow-slick3 prev-slick3 '><img class='arrow-img filter-wh' src='assets/heroicons_arrow-up-16-solid.svg' alt='' /></div>",
+                nextArrow:"<div class='arrow-wrapper arrow-slick3 next-slick3 '><img class='arrow-img filter-wh' src='assets/heroicons_arrow-up-16-solid.svg' alt='' /></div>",
 
                 dots: true,
                 appendDots: $(this).find('.wrap-slick3-dots'),
